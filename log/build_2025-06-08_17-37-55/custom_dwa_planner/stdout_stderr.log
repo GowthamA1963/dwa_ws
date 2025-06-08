@@ -1,0 +1,28 @@
+running develop
+Removing /home/gowtham/dwa_ws/install/custom_dwa_planner/lib/python3.10/site-packages/custom-dwa-planner.egg-link (link to .)
+running egg_info
+writing ../../build/custom_dwa_planner/custom_dwa_planner.egg-info/PKG-INFO
+writing dependency_links to ../../build/custom_dwa_planner/custom_dwa_planner.egg-info/dependency_links.txt
+writing entry points to ../../build/custom_dwa_planner/custom_dwa_planner.egg-info/entry_points.txt
+writing requirements to ../../build/custom_dwa_planner/custom_dwa_planner.egg-info/requires.txt
+writing top-level names to ../../build/custom_dwa_planner/custom_dwa_planner.egg-info/top_level.txt
+reading manifest file '../../build/custom_dwa_planner/custom_dwa_planner.egg-info/SOURCES.txt'
+writing manifest file '../../build/custom_dwa_planner/custom_dwa_planner.egg-info/SOURCES.txt'
+running build
+running build_py
+copying custom_dwa_planner/dwa_node.py -> /home/gowtham/dwa_ws/build/custom_dwa_planner/build/lib/custom_dwa_planner
+running install
+running install_lib
+creating /home/gowtham/dwa_ws/install/custom_dwa_planner/lib/python3.10/site-packages/custom_dwa_planner
+copying /home/gowtham/dwa_ws/build/custom_dwa_planner/build/lib/custom_dwa_planner/dwa_node.py -> /home/gowtham/dwa_ws/install/custom_dwa_planner/lib/python3.10/site-packages/custom_dwa_planner
+copying /home/gowtham/dwa_ws/build/custom_dwa_planner/build/lib/custom_dwa_planner/__init__.py -> /home/gowtham/dwa_ws/install/custom_dwa_planner/lib/python3.10/site-packages/custom_dwa_planner
+byte-compiling /home/gowtham/dwa_ws/install/custom_dwa_planner/lib/python3.10/site-packages/custom_dwa_planner/dwa_node.py to dwa_node.cpython-310.pyc
+byte-compiling /home/gowtham/dwa_ws/install/custom_dwa_planner/lib/python3.10/site-packages/custom_dwa_planner/__init__.py to __init__.cpython-310.pyc
+running install_data
+copying resource/custom_dwa_planner -> /home/gowtham/dwa_ws/install/custom_dwa_planner/share/ament_index/resource_index/packagename
+copying package.xml -> /home/gowtham/dwa_ws/install/custom_dwa_planner/share/custom_dwa_planner
+running install_egg_info
+Copying ../../build/custom_dwa_planner/custom_dwa_planner.egg-info to /home/gowtham/dwa_ws/install/custom_dwa_planner/lib/python3.10/site-packages/custom_dwa_planner-0.0.1-py3.10.egg-info
+running install_scripts
+Installing dwa_planner script to /home/gowtham/dwa_ws/install/custom_dwa_planner/lib/custom_dwa_planner
+writing list of installed files to '/home/gowtham/dwa_ws/build/custom_dwa_planner/install.log'

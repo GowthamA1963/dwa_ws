@@ -1,0 +1,17 @@
+[0.614s] Invoking command in '/home/gowtham/dwa_ws/build/custom_dwa_planner': PYTHONPATH=/home/gowtham/dwa_ws/build/custom_dwa_planner/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/gowtham/dwa_ws/install/custom_dwa_planner/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/gowtham/dwa_ws/build/custom_dwa_planner/build --no-deps symlink_data
+[0.857s] running develop
+[1.006s] running egg_info
+[1.006s] writing custom_dwa_planner.egg-info/PKG-INFO
+[1.006s] writing dependency_links to custom_dwa_planner.egg-info/dependency_links.txt
+[1.007s] writing entry points to custom_dwa_planner.egg-info/entry_points.txt
+[1.007s] writing requirements to custom_dwa_planner.egg-info/requires.txt
+[1.007s] writing top-level names to custom_dwa_planner.egg-info/top_level.txt
+[1.009s] reading manifest file 'custom_dwa_planner.egg-info/SOURCES.txt'
+[1.010s] writing manifest file 'custom_dwa_planner.egg-info/SOURCES.txt'
+[1.011s] running build_ext
+[1.011s] Creating /home/gowtham/dwa_ws/install/custom_dwa_planner/lib/python3.10/site-packages/custom-dwa-planner.egg-link (link to .)
+[1.012s] Installing dwa_planner script to /home/gowtham/dwa_ws/install/custom_dwa_planner/lib/custom_dwa_planner
+[1.012s] 
+[1.012s] Installed /home/gowtham/dwa_ws/build/custom_dwa_planner
+[1.013s] running symlink_data
+[1.042s] Invoked command in '/home/gowtham/dwa_ws/build/custom_dwa_planner' returned '0': PYTHONPATH=/home/gowtham/dwa_ws/build/custom_dwa_planner/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/gowtham/dwa_ws/install/custom_dwa_planner/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/gowtham/dwa_ws/build/custom_dwa_planner/build --no-deps symlink_data
