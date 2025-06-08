@@ -56,9 +56,3 @@ This setup allows for navigation of the TurtleBot3 within a simulated environmen
 
 If you want to make any modifications or contribute to this project, feel free to fork and make a pull request!
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
