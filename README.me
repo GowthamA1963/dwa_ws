@@ -4,9 +4,9 @@ This repository contains the implementation of a custom Dynamic Window Approach 
 
 ## Requirements
 
-* ROS2 Humble
-* Gazebo
-* TurtleBot3 simulation setup
+- ROS2 Humble
+- Gazebo
+- TurtleBot3 simulation setup
 
 ## Installation
 
@@ -14,37 +14,50 @@ This repository contains the implementation of a custom Dynamic Window Approach 
 
 2. **Install Gazebo**: Gazebo can be installed by following the instructions here: [Gazebo Installation](http://gazebosim.org).
 
-3. **Install TurtleBot3 Packages**: Install the required TurtleBot3 simulation packages by running:
+3. **Install TurtleBot3 Packages**: Install the required TurtleBot3 simulation packages.
 
-   `sudo apt install ros-humble-turtlebot3-gazebo`
+    ```bash
+    sudo apt install ros-humble-turtlebot3-gazebo
+    ```
 
-4. **Clone the repository**: Clone the repository into your ROS2 workspace:
+4. **Clone the repository**: Clone the repository into your ROS2 workspace.
 
-   `git clone <repository-url> ~/dwa_ws/src/custom_dwa_planner`
+    ```bash
+    git clone <repository-url> ~/dwa_ws/src/custom_dwa_planner
+    ```
 
-5. **Build the workspace**: Build the workspace using `colcon`:
+5. **Build the workspace**: Build the workspace using `colcon`.
 
-   `cd ~/dwa_ws`
+    ```bash
+    cd ~/dwa_ws
+    colcon build
+    ```
 
-   `colcon build`
+6. **Source the workspace**: Source the workspace to set up the environment.
 
-6. **Source the workspace**: Source the workspace to set up the environment:
-
-   `source ~/dwa_ws/install/setup.bash`
+    ```bash
+    source ~/dwa_ws/install/setup.bash
+    ```
 
 ## Running the Planner
 
-1. **Run the TurtleBot3 simulation**: First, make sure to run the TurtleBot3 simulation in Gazebo and visualize the environment in RViz. Use the following command to start Gazebo and load the environment:
+1. **Run the TurtleBot3 simulation**: First, make sure to run the TurtleBot3 simulation in Gazebo and visualize the environment in RViz. Use the following command to start Gazebo and load the environment.
 
-   `ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py`
+    ```bash
+    ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py
+    ```
 
-2. **Start RViz with the DWA view**: Open RViz and load the `dwa_view.rviz` configuration file to visualize the robot's trajectory and sensor data:
+2. **Start RViz with the DWA view**: Open RViz and load the `dwa_view.rviz` configuration file to visualize the robot's trajectory and sensor data.
 
-   `rviz2 -d dwa_view.rviz`
+    ```bash
+    rviz2 -d dwa_view.rviz
+    ```
 
-3. **Run the custom DWA Planner node**: Now, you can run the custom DWA planner node to start generating velocity commands based on the sensor data:
+3. **Run the custom DWA Planner node**: Now, you can run the custom DWA planner node to start generating velocity commands based on the sensor data.
 
-   `ros2 run custom_dwa_planner dwa_planner`
+    ```bash
+    ros2 run custom_dwa_planner dwa_planner
+    ```
 
 ## Conclusion
 
@@ -54,3 +67,4 @@ If you want to make any modifications or contribute to this project, feel free t
 
 ## License
 
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
