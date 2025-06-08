@@ -1,0 +1,36 @@
+# ROS2 build directories
+build/
+install/
+log/
+
+# Python specific
+*.pyc
+__pycache__/
+
+# Editor directories
+.vscode/
+.idea/
+
+# System-specific files
+.DS_Store           # macOS
+Thumbs.db           # Windows
+*.swp               # Vim temporary files
+
+# Ignore CMake files
+CMakeLists.txt.user
+CMakeCache.txt
+
+# ROS2-specific (if using colcon)
+*~
+*.bak
+*.swp
+
+# RViz Configuration Files
+*.rviz
+
+# Ignore ROS2 message/service definitions
+*.msg
+*.srv
+
+# Ignore all temporary or backup files
+*~
