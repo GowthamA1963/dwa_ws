@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-# Import ROS2 libraries and necessary Python packages
 import rclpy
 from rclpy.node import Node
 import math
@@ -12,44 +11,36 @@ from tf_transformations import euler_from_quaternion
 from visualization_msgs.msg import Marker, MarkerArray
 import random
 
-# Main DWA Planner Node class
 class DWAPlanner(Node):
     def __init__(self):
         super().__init__('dwa_planner')
 
-        # ROS2 Publishers and Subscribers
-        self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)  # Publishes velocity commands
-        self.marker_pub = self.create_publisher(MarkerArray, '/dwa_trajectories', 10)  # Publishes trajectory markers
-        self.create_subscription(Odometry, '/odom', self.odom_callback, 10)  # Subscribes to Odometry
-        self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)  # Subscribes to LaserScan
+        self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.marker_pub = self.create_publisher(MarkerArray, '/dwa_trajectories', 10)
+        self.create_subscription(Odometry, '/odom', self.odom_callback, 10)
+        self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)
 
-        # Timer for periodically running the planner
-        self.timer = self.create_timer(0.1, self.plan)  # Run planning loop every 0.1s
+        self.timer = self.create_timer(0.1, self.plan)
 
-        # Robot state variables
-        self.pose = [0, 0, 0]  # Robot position (x, y, yaw)
-        self.vel = [0.0, 0.0]  # Robot velocities (linear x, angular z)
-        self.scan = None  # LaserScan data
+        self.pose = [0, 0, 0]
+        self.vel = [0.0, 0.0]
+        self.scan = None
 
-        # DWA Parameters for velocity sampling
-        self.v_res = 0.02  # Resolution of linear velocity samples
-        self.w_res = 0.05  # Resolution of angular velocity samples
-        self.max_v = 0.4   # Maximum linear velocity
-        self.min_v = 0.0   # Minimum linear velocity
-        self.max_w = 1.5   # Maximum angular velocity
-        self.min_w = -1.5  # Minimum angular velocity
-        self.dt = 0.1      # Time step for trajectory prediction
-        self.predict_time = 1.0  # Predict forward for 1 second
+        self.v_res = 0.02
+        self.w_res = 0.05
+        self.max_v = 0.4
+        self.min_v = 0.0
+        self.max_w = 1.5
+        self.min_w = -1.5
+        self.dt = 0.1
+        self.predict_time = 1.0
 
-        # Cost function weights for scoring trajectories
         self.goal_cost_weight = 1.0
         self.obstacle_cost_weight = 0.5
         self.smoothness_cost_weight = 0.1
 
-        # Static goal position (can be made dynamic later)
         self.goal = [2.0, 0.0]
 
-    # Callback function for Odometry messages
     def odom_callback(self, msg):
         self.pose[0] = msg.pose.pose.position.x
         self.pose[1] = msg.pose.pose.position.y
@@ -61,64 +52,54 @@ class DWAPlanner(Node):
         self.vel[0] = msg.twist.twist.linear.x
         self.vel[1] = msg.twist.twist.angular.z
 
-    # Callback function for LaserScan messages
     def scan_callback(self, msg):
         self.scan = msg
 
-    # Main planning function called by timer
     def plan(self):
         if self.scan is None:
-            return  # Wait for LaserScan data
+            return
 
         best_u = None
         min_cost = float('inf')
         all_trajectories = []
 
-        # Sample velocities and evaluate each trajectory
         for v in np.arange(self.min_v, self.max_v + self.v_res, self.v_res):
             for w in np.arange(self.min_w, self.max_w + self.w_res, self.w_res):
                 traj = self.predict_trajectory(v, w)
                 all_trajectories.append(traj)
 
-                # Compute individual costs
                 to_goal_cost = self.calc_to_goal_cost(traj)
                 obstacle_cost = self.calc_obstacle_cost(traj)
                 smoothness_cost = abs(w)
 
                 if obstacle_cost == float('inf'):
-                    continue  # Trajectory hits an obstacle
+                    continue
 
-                # Combine costs with weights
                 total_cost = (
                     self.goal_cost_weight * to_goal_cost +
                     self.obstacle_cost_weight * obstacle_cost +
                     self.smoothness_cost_weight * smoothness_cost
                 )
 
-                # Keep the best (lowest-cost) velocity
                 if total_cost < min_cost:
                     min_cost = total_cost
                     best_u = [v, w]
 
-        # Publish best velocity command if found
         if best_u and (best_u[0] > 0.01 or abs(best_u[1]) > 0.01):
             cmd = Twist()
             cmd.linear.x = best_u[0]
             cmd.angular.z = best_u[1]
             self.cmd_pub.publish(cmd)
-            self.get_logger().info(f'✅ Best cmd: v={best_u[0]:.2f}, w={best_u[1]:.2f}')
+            self.get_logger().info(f'Best cmd: v={best_u[0]:.2f}, w={best_u[1]:.2f}')
         else:
-            # No valid trajectory, apply a small forward motion to recover
-            self.get_logger().warn("⚠️ No valid trajectory. Trying slow forward motion.")
+            self.get_logger().warn("No valid trajectory. Trying slow forward motion.")
             cmd = Twist()
             cmd.linear.x = 0.05
             cmd.angular.z = 0.2
             self.cmd_pub.publish(cmd)
 
-        # Visualize all evaluated trajectories in RViz
         self.publish_markers(all_trajectories)
 
-    # Predicts the robot's trajectory for given velocity commands
     def predict_trajectory(self, v, w):
         x, y, theta = self.pose
         traj = []
@@ -133,18 +114,15 @@ class DWAPlanner(Node):
 
         return traj
 
-    # Calculates distance from final point of trajectory to the goal
     def calc_to_goal_cost(self, traj):
         goal_x, goal_y = self.goal
         last_x, last_y = traj[-1]
         return math.hypot(goal_x - last_x, goal_y - last_y)
 
-    # Calculates cost for obstacle proximity
     def calc_obstacle_cost(self, traj):
         if not self.scan:
             return 0.0
 
-        # Filter valid laser ranges
         ranges = np.array(self.scan.ranges)
         angles = np.linspace(self.scan.angle_min, self.scan.angle_max, len(ranges))
         valid = np.isfinite(ranges) & (ranges > self.scan.range_min) & (ranges < self.scan.range_max)
@@ -154,24 +132,18 @@ class DWAPlanner(Node):
         if len(ranges) == 0:
             return float('inf')
 
-        # Compute obstacle positions in global frame
         ox = self.pose[0] + ranges * np.cos(self.pose[2] + angles)
         oy = self.pose[1] + ranges * np.sin(self.pose[2] + angles)
 
-        # Find minimum distance to trajectory
         min_dist = float('inf')
         for x, y in traj:
             dists = np.hypot(ox - x, oy - y)
             min_dist = min(min_dist, np.min(dists))
 
-        self.get_logger().info(f'📏 Obstacle min_dist: {min_dist:.2f}')
-
-        # Penalize if too close to obstacle
         if min_dist < 0.05:
             return float('inf')
         return 1.0 / min_dist
 
-    # Publish all trajectories to RViz for visualization
     def publish_markers(self, trajectories):
         marker_array = MarkerArray()
 
@@ -200,7 +172,6 @@ class DWAPlanner(Node):
 
         self.marker_pub.publish(marker_array)
 
-# Entry point for the script
 def main(args=None):
     rclpy.init(args=args)
     node = DWAPlanner()
